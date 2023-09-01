@@ -61,9 +61,9 @@ def main():
                     print(f"{i}. {branch.strip('*')}")
 
                 selection = input(
-                    "Enter the branch number(s) or name(s) to delete (comma-separated) or 'q' to quit: "
+                    "Enter the branch number(s) or name(s) to delete (comma-separated) or 'm' to main menu: "
                 )
-                if selection.lower() == "q":
+                if selection.lower() == "m":
                     continue
 
                 branches_to_delete = [b.strip() for b in selection.split(",")]
