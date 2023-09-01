@@ -1,7 +1,7 @@
-# Contributing to Github local branch manager
+# Contributing to Git Local Branch Delete Manager
 
 
-We welcome contributions from the community to improve Git Branch Manager. To contribute, please follow these steps:
+We welcome contributions from the community to improve Git Local Branch Delete Manager. To contribute, please follow these steps:
 
 ### Development Environment
 
