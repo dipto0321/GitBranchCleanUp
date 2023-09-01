@@ -67,20 +67,20 @@ def main():
                     continue
 
                 branches_to_delete = [b.strip() for b in selection.split(",")]
-                valid_branches = [branch.strip("*") for branch in branches]
+                valid_branches = [branch.strip('*') for branch in branches]
 
-                invalid_branches = [
-                    b for b in branches_to_delete if b not in valid_branches
-                ]
-
-                if invalid_branches:
-                    print(f"Invalid branch name(s): {', '.join(invalid_branches)}")
-                else:
-                    for branch_to_delete in branches_to_delete:
-                        if branch_to_delete != "main":
+                for branch_to_delete in branches_to_delete:
+                    if branch_to_delete != "main":
+                        if branch_to_delete.isdigit() and int(branch_to_delete) <= len(branches):
+                            index = int(branch_to_delete) - 1
+                            branch_name = branches[index].strip('*')
+                            delete_branch(branch_name)
+                        elif branch_to_delete in valid_branches:
                             delete_branch(branch_to_delete)
                         else:
-                            print("Cannot delete the 'main' branch.")
+                            print(f"Invalid branch: {branch_to_delete}")
+                    else:
+                        print("Cannot delete the 'main' branch.")
             else:
                 print("No local branches found.")
                 return  # Exit the main function, effectively closing the CLI
