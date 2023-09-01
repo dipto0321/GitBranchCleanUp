@@ -41,7 +41,7 @@ Before using Git Branch Manager, ensure that you have the following prerequisite
 3. source ~/.bashrc  # or source ~/.zshrc if you use Zsh
 
     ```bash
-       chmod +x git_branch_manager.py
+       chmod +x main.py
     ```
 4. **Create an Alias:**
    You can create an alias for the script in your shell configuration file (~/.bashrc, ~/.zshrc, etc.). Edit the appropriate configuration file using a text editor. For example:
@@ -50,7 +50,7 @@ Before using Git Branch Manager, ensure that you have the following prerequisite
     ```
    Add the following line to create an alias:
     ```bash
-    alias gbm='~/path/to/git_branch_manager.py'
+    alias gbm='~/path/to/git_branch_manager/main.py'
     ```
    Replace ~/path/to/git_branch_manager.py with the actual path to your script.
 5. **Reload the Shell Configuration:** After saving the configuration file, you need to either restart your terminal or run the following command to apply the changes immediately:
