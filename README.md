@@ -74,16 +74,6 @@ Follow the prompts to make your selection and manage your Git branches according
 
 ### Contributing
 
-We welcome contributions from the community to improve GitBranchCleanUp. To contribute, please follow these steps:
-
-#### Development Environment
-
-Ensure you have the following software installed:
-
-- Python 3.8+
-- Virtual environment (optional but recommended)
-
-#### How to Contribute
 Please follow our [code of conduct](CODE_OF_CONDUCT.md) and [contribution guidelines](CONTRIBUTING.md).
 
 ## License
