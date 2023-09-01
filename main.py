@@ -1,6 +1,13 @@
 import subprocess
 
 
+def print_header():
+    print("╭───────────────────────────────────╮")
+    print("│    GitHub Local Branch Manager    │")
+    print("│            Version 0.0.1          │")
+    print("╰───────────────────────────────────╯")
+
+
 def list_local_branches():
     try:
         result = subprocess.run(
@@ -11,10 +18,11 @@ def list_local_branches():
         )
         branches = result.stdout.strip().split("\n")
         filtered_branches = [branch for branch in branches if branch != "main"]
+
         return filtered_branches
 
-    except subprocess.CalledProcessError:
-        print("Error: Unable to list local branches.")
+    except subprocess.CalledProcessError as e:
+        print(f"Error: Unable to list local branches. {e}")
         return []
 
 
@@ -22,15 +30,8 @@ def delete_branch(branch_name):
     try:
         subprocess.run(["git", "branch", "-D", branch_name], check=True)
         print(f"Deleted branch '{branch_name}'.")
-    except subprocess.CalledProcessError:
-        print(f"Error: Unable to delete branch '{branch_name}'.")
-
-
-def print_header():
-    print("╭───────────────────────────────────╮")
-    print("│    GitHub Local Branch Manager    │")
-    print("│            Version 0.0.1          │")
-    print("╰───────────────────────────────────╯")
+    except subprocess.CalledProcessError as e:
+        print(f"Error: Unable to delete branch '{branch_name}'. {e}")
 
 
 def main():
@@ -46,12 +47,12 @@ def main():
         if choice == "1":
             branches = list_local_branches()
             if not branches:
-                print("No local branches found for delete")
-                return
+                print("No local branches found.")
+                return  # Exit the main function, effectively closing the CLI
             for branch in branches:
-                if branch.strip("*") != "main":
-                    delete_branch(branch.strip())
+                delete_branch(branch.strip())
             print("Deleted all local branches except 'main'.")
+            return
         elif choice == "2":
             branches = list_local_branches()
             if branches:
@@ -60,33 +61,32 @@ def main():
                     print(f"{i}. {branch.strip('*')}")
 
                 selection = input(
-                    "Enter the branch number or name to delete (or 'q' to quit): "
+                    "Enter the branch number(s) or name(s) to delete (comma-separated) or 'q' to quit: "
                 )
                 if selection.lower() == "q":
                     continue
 
-                try:
-                    selection = int(selection)
-                    if 1 <= selection <= len(branches):
-                        branch_to_delete = branches[selection - 1].strip("*")
+                branches_to_delete = [b.strip() for b in selection.split(",")]
+                valid_branches = [branch.strip("*") for branch in branches]
+
+                invalid_branches = [
+                    b for b in branches_to_delete if b not in valid_branches
+                ]
+
+                if invalid_branches:
+                    print(f"Invalid branch name(s): {', '.join(invalid_branches)}")
+                else:
+                    for branch_to_delete in branches_to_delete:
                         if branch_to_delete != "main":
                             delete_branch(branch_to_delete)
                         else:
                             print("Cannot delete the 'main' branch.")
-                    else:
-                        print("Invalid selection.")
-                except ValueError:
-                    branch_to_delete = selection.strip()
-                    if branch_to_delete != "main":
-                        delete_branch(branch_to_delete)
-                    else:
-                        print("Cannot delete the 'main' branch.")
             else:
-                print("No local branches found for delete")
-                return
+                print("No local branches found.")
+                return  # Exit the main function, effectively closing the CLI
         elif choice == "3":
             print("Operation canceled.")
-            return
+            return  # Exit the main function, effectively closing the CLI
         else:
             print("Invalid choice. Please select a valid option.")
 
