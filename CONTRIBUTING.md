@@ -1,7 +1,7 @@
-# Contributing to Git Local Branch Delete Manager
+# Contributing to GitBranchCleanUp
 
 
-We welcome contributions from the community to improve Git Local Branch Delete Manager. To contribute, please follow these steps:
+We welcome contributions from the community to improve GitBranchCleanUp. To contribute, please follow these steps:
 
 ### Development Environment
 
