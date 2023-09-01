@@ -4,10 +4,15 @@ import subprocess
 def list_local_branches():
     try:
         result = subprocess.run(
-            ["git", "branch"], stdout=subprocess.PIPE, text=True, check=True
+            ["git", "branch", "--list", "--no-column", "--format=%(refname:short)"],
+            stdout=subprocess.PIPE,
+            text=True,
+            check=True,
         )
         branches = result.stdout.strip().split("\n")
-        return branches
+        filtered_branches = [branch for branch in branches if branch != "main"]
+        return filtered_branches
+
     except subprocess.CalledProcessError:
         print("Error: Unable to list local branches.")
         return []
@@ -22,10 +27,10 @@ def delete_branch(branch_name):
 
 
 def print_header():
-    print("╭───────────────────────────────────────╮")
-    print("│        GitHub Local Branch Manager      │")
-    print("│                Version 0.0.1            │")
-    print("╰───────────────────────────────────────╯")
+    print("╭───────────────────────────────────╮")
+    print("│    GitHub Local Branch Manager    │")
+    print("│            Version 0.0.1          │")
+    print("╰───────────────────────────────────╯")
 
 
 def main():
@@ -40,41 +45,48 @@ def main():
 
         if choice == "1":
             branches = list_local_branches()
+            if not branches:
+                print("No local branches found for delete")
+                return
             for branch in branches:
                 if branch.strip("*") != "main":
                     delete_branch(branch.strip())
             print("Deleted all local branches except 'main'.")
         elif choice == "2":
             branches = list_local_branches()
-            print("Local branches:")
-            for i, branch in enumerate(branches, start=1):
-                print(f"{i}. {branch.strip('*')}")
+            if branches:
+                print("Local branches:")
+                for i, branch in enumerate(branches, start=1):
+                    print(f"{i}. {branch.strip('*')}")
 
-            selection = input(
-                "Enter the branch number or name to delete (or 'done' to exit): "
-            )
-            if selection.lower() == "done":
-                continue
+                selection = input(
+                    "Enter the branch number or name to delete (or 'q' to quit): "
+                )
+                if selection.lower() == "q":
+                    continue
 
-            try:
-                selection = int(selection)
-                if 1 <= selection <= len(branches):
-                    branch_to_delete = branches[selection - 1].strip("*")
+                try:
+                    selection = int(selection)
+                    if 1 <= selection <= len(branches):
+                        branch_to_delete = branches[selection - 1].strip("*")
+                        if branch_to_delete != "main":
+                            delete_branch(branch_to_delete)
+                        else:
+                            print("Cannot delete the 'main' branch.")
+                    else:
+                        print("Invalid selection.")
+                except ValueError:
+                    branch_to_delete = selection.strip()
                     if branch_to_delete != "main":
                         delete_branch(branch_to_delete)
                     else:
                         print("Cannot delete the 'main' branch.")
-                else:
-                    print("Invalid selection.")
-            except ValueError:
-                branch_to_delete = selection.strip()
-                if branch_to_delete != "main":
-                    delete_branch(branch_to_delete)
-                else:
-                    print("Cannot delete the 'main' branch.")
+            else:
+                print("No local branches found for delete")
+                return
         elif choice == "3":
             print("Operation canceled.")
-            break
+            return
         else:
             print("Invalid choice. Please select a valid option.")
 
