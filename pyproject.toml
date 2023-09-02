@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "git-branch-manager"
+name = "GitBranchCleanUp"
 version = "0.1.0"
 description = ""
 authors = ["Dipto Karmakar <diptokmk47@gmail.com>"]
