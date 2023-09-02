@@ -3,7 +3,7 @@ import subprocess
 
 def print_header():
     print("╭───────────────────────────────────╮")
-    print("│    GitHub Local Branch Manager    │")
+    print("│          GitBranchCleanUp         │")
     print("│            Version 0.0.1          │")
     print("╰───────────────────────────────────╯")
 
